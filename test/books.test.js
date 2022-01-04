@@ -2,7 +2,15 @@ const supertest = require('supertest');
 
 const app = require('../src/app');
 
-const booksKeys = ['id', 'title', 'genre', 'picture', 'artist', 'summary', 'year'];
+const booksKeys = [
+  'idbooks',
+  'title',
+  'genre',
+  'picture',
+  'artist',
+  'summary',
+  'year',
+];
 const bookToCreate = {
   title: 'A Song Of Ice And Fire',
   genre: 'fantasy',
@@ -10,7 +18,8 @@ const bookToCreate = {
   picture:
     'https://upload.wikimedia.org/wikipedia/en/thumb/9/93/AGameOfThrones.jpg/220px-AGameOfThrones.jpg',
   artist: 'George R R Martin',
-  summary: 'A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels by the American author George R. R. Martin. It was first published on August 1, 1996. The novel won the 1997 Locus Award[2] and was nominated for both the 1997 Nebula Award[2] and the 1997 World Fantasy Award.[3] The novella Blood of the Dragon, comprising the Daenerys Targaryen chapters from the novel, won the 1997 Hugo Award for Best Novella. In January 2011, the novel became a New York Times Bestseller[4] and reached No. 1 on the list in July 2011.[5]'
+  summary:
+    'A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels by the American author George R. R. Martin. It was first published on August 1, 1996. The novel won the 1997 Locus Award[2] and was nominated for both the 1997 Nebula Award[2] and the 1997 World Fantasy Award.[3] The novella Blood of the Dragon, comprising the Daenerys Targaryen chapters from the novel, won the 1997 Hugo Award for Best Novella. In January 2011, the novel became a New York Times Bestseller[4] and reached No. 1 on the list in July 2011.[5]',
 };
 
 describe('BOOKS ROUTES', () => {
@@ -58,14 +67,14 @@ describe('BOOKS ROUTES', () => {
 
   it(`should update the created books title 🧪 /api/books/`, async () => {
     await supertest(app)
-      .put(`/api/books/${persistentDatas.createdBooks.id}`)
+      .put(`/api/books/${persistentDatas.createdBooks.idbooks}`)
       .send({
-        title: 'A Song Of Ice And Fire',
+        title: 'The Light Side of the Sun',
       })
       .expect(204);
 
     const res = await supertest(app).get(
-      `/api/books/${persistentDatas.createdBooks.id}`
+      `/api/books/${persistentDatas.createdBooks.idbooks}`
     );
 
     expect(res.body).toHaveProperty('title', 'The Light Side of the Sun');
@@ -73,11 +82,11 @@ describe('BOOKS ROUTES', () => {
 
   it(`should delete the created books 🧪 /api/books/`, async () => {
     await supertest(app)
-      .delete(`/api/books/${persistentDatas.createdBooks.id}`)
+      .delete(`/api/books/${persistentDatas.createdBooks.idbooks}`)
       .expect(204);
 
     await supertest(app)
-      .get(`/api/books/${persistentDatas.createdBooks.id}`)
+      .get(`/api/books/${persistentDatas.createdBooks.idbooks}`)
       .expect(404);
   });
 });
